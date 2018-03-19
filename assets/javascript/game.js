@@ -41,17 +41,20 @@ class Jedi {
   }
 
   updateStatus() {
+    //to be used frequently during battle
     this.status.text(this.health)
   }
 
   reset() {
+    // reset object to origional status
     this.health = this.baseHealth;
     this.attack = this.baseAttack;
   }
 }
 
 window.gameEnv = {
-
+  //main game enviroment
+  //frequently used $ objects and counters
   heroBoxes: $(".heroBox"),
   instructionText: $("#instructions"),
   secondRow: $("#secondRow"),
@@ -62,6 +65,7 @@ window.gameEnv = {
   phase: 0,
 
   characters: {
+    //base character declaration
     luke: new Jedi("Luke Skywalker", "luke", "#", 100, 100, 100),
     obi: new Jedi("Obi-Wan Kenobi", "obi", "#", 100, 100, 100),
     maul: new Jedi("Darth Maul", "maul", "#", 100, 100, 100),
@@ -69,7 +73,10 @@ window.gameEnv = {
   },
 
   displaySet: [
+    //contains functions as display templates, linked with this.phase
+
     function() {
+      //phase 0, choose character
       gameEnv.instructionText.text("Choose your character");
       gameEnv.secondRow.append(gameEnv.createHeader("Characters"));
       gameEnv.thirdRow.append(gameEnv.createHeader("   "));
@@ -86,6 +93,7 @@ window.gameEnv = {
     },
 
     function () {
+      //phase 1, choose opponent
       gameEnv.secondRow.append(gameEnv.createHeader("You Chose:"));
       gameEnv.thirdRow.append(gameEnv.createHeader("Opponents:"));
       gameEnv.fourthRow.append(gameEnv.createHeader("Defeated:"));
@@ -107,6 +115,7 @@ window.gameEnv = {
   ],
 
   createHeader: function(text) {
+    //creates h5 header for simple changes
     let header = $("<h5>");
     header.addClass("col-12");
     header.text(text);
@@ -114,6 +123,7 @@ window.gameEnv = {
   },
 
   chooseCharacter: function(val){
+    //creates list for active character orientation [[jedi, status], ...]
     console.log(val);
     console.log("here");
     this.activeSet = [];
@@ -130,17 +140,20 @@ window.gameEnv = {
   },
 
   display: function() {
+    //empty active area and send to displaySet
     $(".envo").empty();
     this.displaySet[this.phase]()
   },
 
   boxClick: function(val) {
+    // conditional logic for heroBox click events
     if(this.phase === 0) {
       this.chooseCharacter(val)
     }
   },
 
   initialize: function () {
+    //sets initial enviroment on dom load
     this.display();
     $(".heroBox").click(function () {
       let value = $(this).val();
