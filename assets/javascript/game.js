@@ -64,6 +64,8 @@ window.gameEnv = {
   losses: 0,
   phase: 0,
 
+  activeSet: {},
+
   characters: {
     //base character declaration
     luke: new Jedi("Luke Skywalker", "luke", "#", 100, 100, 100),
@@ -94,23 +96,34 @@ window.gameEnv = {
 
     function () {
       //phase 1, choose opponent
+      gameEnv.instructionText.text("Choose your opponent");
       gameEnv.secondRow.append(gameEnv.createHeader("You Chose:"));
       gameEnv.thirdRow.append(gameEnv.createHeader("Opponents:"));
       gameEnv.fourthRow.append(gameEnv.createHeader("Defeated:"));
-      for (let [index, [obj, status]] of gameEnv.activeSet.entries()) {
-        console.log(obj);
-        switch (status) {
-          case "player":
-            gameEnv.secondRow.append(obj.element);
-            break;
-          case "standBy":
-            gameEnv.thirdRow.append(obj.element);
-            break;
-          case "dead":
-            gameEnv.fourthRow.append(obj.element);
-            break;
-        }
-      }
+      gameEnv.secondRow.append(gameEnv.activeSet.player.element);
+      $.each(gameEnv.activeSet.standby, function (index, obj) {
+        gameEnv.thirdRow.append(obj.element);
+      });
+      $.each(gameEnv.activeSet.dead, function (index, obj) {
+        gameEnv.thirdRow.append(obj.element);
+      });
+    },
+
+    function() {
+      gameEnv.secondRow.append(gameEnv.createHeader("Fight!"));
+      gameEnv.thirdRow.append(gameEnv.createHeader("Spectating:"));
+      gameEnv.fourthRow.append(gameEnv.createHeader("Defeated:"));
+      gameEnv.secondRow.append([
+          gameEnv.activeSet.player.element,
+          gameEnv.attackButton(),
+          gameEnv.activeSet.opponent.element,
+        ]);
+      $.each(gameEnv.activeSet.standby, function(index, obj) {
+        gameEnv.thirdRow.append(obj.element);
+      });
+      $.each(gameEnv.activeSet.dead, function(index, obj) {
+        gameEnv.thirdRow.append(obj.element);
+      });
     }
   ],
 
@@ -122,39 +135,69 @@ window.gameEnv = {
     return header;
   },
 
+  attackButton: function() {
+    let button = $("<button>");
+    button.addClass("atk-btn btn btn-danger col-3 heroBox");
+    button.attr("value", "atk");
+    button.text("Attack");
+    return button;
+  },
+
   chooseCharacter: function(val){
     //creates list for active character orientation [[jedi, status], ...]
     console.log(val);
-    console.log("here");
-    this.activeSet = [];
-    $.each(this.characters, function (key, value) {
+    this.activeSet.standby = [];
+    this.activeSet.dead = [];
+    $.each(this.characters, function (key, obj) {
       if (key === val) {
-        gameEnv.activeSet.push([value, "player"])
+        gameEnv.activeSet.player = obj;
       }
       else {
-        gameEnv.activeSet.push([value, "standBy"])
+        gameEnv.activeSet.standby.push(obj)
       }
     });
     this.phase = 1;
-    this.display();
+    this.initialize();
   },
 
-  display: function() {
-    //empty active area and send to displaySet
-    $(".envo").empty();
-    this.displaySet[this.phase]()
+  chooseEnemy: function(val) {
+    $.each(this.characters, function (key, obj) {
+      console.log("here");
+
+      console.log(gameEnv.activeSet.standby.indexOf(obj));
+      if (
+        val === key
+        && gameEnv.activeSet.standby.indexOf(obj) !== -1
+      ) {
+        gameEnv.activeSet.opponent = obj;
+        gameEnv.activeSet.standby.splice(
+          gameEnv.activeSet.standby.indexOf(obj), 1
+        );
+        gameEnv.phase = 2;
+      }
+    });
+    if(this.phase === 2) {
+      this.initialize()
+    }
   },
 
   boxClick: function(val) {
     // conditional logic for heroBox click events
-    if(this.phase === 0) {
-      this.chooseCharacter(val)
+    switch (this.phase) {
+      case 0:
+        this.chooseCharacter(val);
+        break;
+      case 1:
+        this.chooseEnemy(val);
+        break;
     }
+
   },
 
   initialize: function () {
     //sets initial enviroment on dom load
-    this.display();
+    $(".envo").empty();
+    this.displaySet[this.phase]();
     $(".heroBox").click(function () {
       let value = $(this).val();
       console.log(value);
