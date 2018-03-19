@@ -1,0 +1,25 @@
+* {
+    font-family: "Courier New", "monospace";
+}
+
+h1, h2, h5 {
+    text-align: center !important;
+}
+
+h5 {
+
+}
+
+.heroBox {
+    height: 155px;
+}
+
+.heroT, .heroS{
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.row5 {
+    height: 190px;
+}
