@@ -78,10 +78,10 @@ window.gameEnv = {
 
   characters: {
     //base character declaration
-    luke: new Jedi("Luke Skywalker", "luke", "#", 100, 10, 5),
-    obi: new Jedi("Obi-Wan Kenobi", "obi", "#", 120, 8, 10),
-    maul: new Jedi("Darth Maul", "maul", "#", 180, 5, 25),
-    sidious: new Jedi("Darth Sidious", "sidious", "#", 150, 7, 20),
+    luke: new Jedi("Luke Skywalker", "luke", "#", 100, 13, 25),
+    obi: new Jedi("Obi-Wan Kenobi", "obi", "#", 120, 10, 20),
+    maul: new Jedi("Darth Maul", "maul", "#", 180, 6, 15),
+    sidious: new Jedi("Darth Sidious", "sidious", "#", 150, 8, 18),
   },
 
   displaySet: [
@@ -90,7 +90,7 @@ window.gameEnv = {
     function() {
       //phase 0, choose character
       gameEnv.instructionText.text("Choose your character");
-      gameEnv.secondRow.append(gameEnv.createHeader("Characters"));
+      gameEnv.secondRow.append(gameEnv.createHeader("Characters:"));
       gameEnv.thirdRow.append(gameEnv.createHeader("   "));
       let i = 0;
       $.each(gameEnv.characters, function (key, value) {
@@ -125,8 +125,12 @@ window.gameEnv = {
       gameEnv.thirdRow.append(gameEnv.createHeader("Combat Log"));
       gameEnv.log1 = gameEnv.createHeader("");
       gameEnv.log2 = gameEnv.createHeader("");
-      gameEnv.thirdRow.append(gameEnv.log1);
-      gameEnv.thirdRow.append(gameEnv.log2);
+      gameEnv.log1.addClass("logText");
+      gameEnv.log2.addClass("logText");
+      gameEnv.logBox = $("<div class='col-5 logBox'>");
+      gameEnv.thirdRow.append(gameEnv.logBox);
+      gameEnv.logBox.append(gameEnv.log1);
+      gameEnv.logBox.append(gameEnv.log2);
       gameEnv.fourthRow.append(
         gameEnv.createHeader("Opponents Remaining:")
       );
@@ -143,10 +147,12 @@ window.gameEnv = {
 
   createHeader: function(text) {
     //creates h5 header for simple changes
+    let container = $("<div>");
+    container.addClass("col-12 headBox");
     let header = $("<h5>");
-    header.addClass("col-12");
+    container.append(header);
     header.text(text);
-    return header;
+    return container;
   },
 
   attackButton: function() {
@@ -202,31 +208,43 @@ window.gameEnv = {
     this.log1.text(
       this.activeSet.player.name + " hit "
       + this.activeSet.opponent.name +
-      " for " + this.activeSet.player.attack +
-      " damage!"
-    );
-    this.activeSet.player.hit(
-      this.activeSet.opponent.counterAttack
-    );
-    this.log2.text(
-      this.activeSet.opponent.name
-      + " countered with an attack for "
-      + this.activeSet.opponent.counterAttack
+      " for " + (this.activeSet.player.attack
+      - this.activeSet.player.baseAttack)
       + " damage!"
     );
-    if (this.activeSet.opponent.health < 1) {
-      this.activeSet.dead.push(this.activeSet.opponent);
-      let btn = $(".atk-btn");
-      btn.attr("value", "cont");
-      btn.text("continue");
-      this.log1.text(
-        "You have defeated " +
-        this.activeSet.opponent.name +
-        "!"
+    if(this.activeSet.opponent.health !== 0) {
+      this.activeSet.player.hit(
+        this.activeSet.opponent.counterAttack
       );
-      this.log2.text("   ")
+      this.log2.text(
+        this.activeSet.opponent.name
+        + " countered with an attack for "
+        + this.activeSet.opponent.counterAttack
+        + " damage!"
+      );
     }
-    if (this.activeSet.player.health < 1) {
+    if (this.activeSet.opponent.health < 1) {
+      if (this.activeSet.standby.length < 1) {
+        let btn = $(".atk-btn");
+        btn.attr("value", "rest");
+        btn.text("Play again");
+        this.log1.text("You win!");
+        this.log2.text("   ")
+      }
+      else {
+        this.activeSet.dead.push(this.activeSet.opponent);
+        let btn = $(".atk-btn");
+        btn.attr("value", "cont");
+        btn.text("continue");
+        this.log1.text(
+          "You have defeated " +
+          this.activeSet.opponent.name +
+          "!"
+        );
+        this.log2.text("   ")
+      }
+    }
+    else if (this.activeSet.player.health < 1) {
       let btn = $(".atk-btn");
       btn.attr("value", "rest");
       btn.text("restart");
