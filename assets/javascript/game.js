@@ -40,15 +40,26 @@ class Jedi {
     this.content.append(this.status)
   }
 
-  updateStatus() {
+  hit(damage) {
     //to be used frequently during battle
-    this.status.text(this.health)
+    this.health -= damage;
+    if (this.health < 0) {
+      this.health = 0;
+    }
+    this.status.text("health: " + this.health)
+  }
+
+  attackMod() {
+    let temp = this.attack;
+    this.attack += this.baseAttack;
+    return temp
   }
 
   reset() {
     // reset object to origional status
     this.health = this.baseHealth;
     this.attack = this.baseAttack;
+    this.status.text("health: " + this.health)
   }
 }
 
@@ -63,15 +74,14 @@ window.gameEnv = {
   wins: 0,
   losses: 0,
   phase: 0,
-
   activeSet: {},
 
   characters: {
     //base character declaration
-    luke: new Jedi("Luke Skywalker", "luke", "#", 100, 100, 100),
-    obi: new Jedi("Obi-Wan Kenobi", "obi", "#", 100, 100, 100),
-    maul: new Jedi("Darth Maul", "maul", "#", 100, 100, 100),
-    sidious: new Jedi("Darth Sidious", "sidious", "#", 100, 100, 100),
+    luke: new Jedi("Luke Skywalker", "luke", "#", 100, 10, 5),
+    obi: new Jedi("Obi-Wan Kenobi", "obi", "#", 120, 8, 10),
+    maul: new Jedi("Darth Maul", "maul", "#", 180, 5, 25),
+    sidious: new Jedi("Darth Sidious", "sidious", "#", 150, 7, 20),
   },
 
   displaySet: [
@@ -105,24 +115,26 @@ window.gameEnv = {
         gameEnv.thirdRow.append(obj.element);
       });
       $.each(gameEnv.activeSet.dead, function (index, obj) {
-        gameEnv.thirdRow.append(obj.element);
+        gameEnv.fourthRow.append(obj.element);
       });
     },
 
     function() {
+      //phase 2, Fight!
       gameEnv.secondRow.append(gameEnv.createHeader("Fight!"));
-      gameEnv.thirdRow.append(gameEnv.createHeader("Spectating:"));
-      gameEnv.fourthRow.append(gameEnv.createHeader("Defeated:"));
+      gameEnv.thirdRow.append(gameEnv.createHeader("Combat Log"));
+      gameEnv.log1 = gameEnv.createHeader("");
+      gameEnv.log2 = gameEnv.createHeader("");
+      gameEnv.thirdRow.append(gameEnv.log1);
+      gameEnv.thirdRow.append(gameEnv.log2);
+      gameEnv.fourthRow.append(gameEnv.createHeader("Opponents Remaining:"));
       gameEnv.secondRow.append([
           gameEnv.activeSet.player.element,
           gameEnv.attackButton(),
           gameEnv.activeSet.opponent.element,
         ]);
       $.each(gameEnv.activeSet.standby, function(index, obj) {
-        gameEnv.thirdRow.append(obj.element);
-      });
-      $.each(gameEnv.activeSet.dead, function(index, obj) {
-        gameEnv.thirdRow.append(obj.element);
+        gameEnv.fourthRow.append(obj.element);
       });
     }
   ],
@@ -146,6 +158,7 @@ window.gameEnv = {
   chooseCharacter: function(val){
     //creates list for active character orientation [[jedi, status], ...]
     console.log(val);
+    this.activeSet = {};
     this.activeSet.standby = [];
     this.activeSet.dead = [];
     $.each(this.characters, function (key, obj) {
@@ -162,8 +175,6 @@ window.gameEnv = {
 
   chooseEnemy: function(val) {
     $.each(this.characters, function (key, obj) {
-      console.log("here");
-
       console.log(gameEnv.activeSet.standby.indexOf(obj));
       if (
         val === key
@@ -181,6 +192,46 @@ window.gameEnv = {
     }
   },
 
+  battleLoop: function() {
+    this.activeSet.opponent.hit(
+      this.activeSet.player.attackMod()
+    );
+    this.log1.text(
+      this.activeSet.player.name + " hit "
+      + this.activeSet.opponent.name +
+      " for " + this.activeSet.player.attack +
+      " damage!"
+    );
+    this.activeSet.player.hit(
+      this.activeSet.opponent.counterAttack
+    );
+    this.log2.text(
+      this.activeSet.opponent.name
+      + " countered with an attack for "
+      + this.activeSet.opponent.counterAttack
+      + " damage!"
+    );
+    if (this.activeSet.opponent.health < 1) {
+      this.activeSet.dead.push(this.activeSet.opponent);
+      let btn = $(".atk-btn");
+      btn.attr("value", "cont");
+      btn.text("continue");
+      this.log1.text(
+        "You have defeated " +
+        this.activeSet.opponent.name +
+        "!"
+      );
+      this.log2.text("   ")
+    }
+    if (this.activeSet.player.health < 1) {
+      let btn = $(".atk-btn");
+      btn.attr("value", "rest");
+      btn.text("restart");
+      this.log1.text("You have been defeated");
+      this.log2.text("   ")
+    }
+  },
+
   boxClick: function(val) {
     // conditional logic for heroBox click events
     switch (this.phase) {
@@ -190,8 +241,27 @@ window.gameEnv = {
       case 1:
         this.chooseEnemy(val);
         break;
+      case 2:
+        if (val === "atk") {
+          this.battleLoop();
+        }
+        else if(val === "cont") {
+          this.phase = 1;
+          this.initialize()
+        }
+        else if (val === "rest") {
+          this.phase = 0;
+          this.resetCharacters();
+          this.initialize();
+        }
+        break;
     }
+  },
 
+  resetCharacters: function() {
+    $.each(this.characters, function (key, obj) {
+      obj.reset()
+    })
   },
 
   initialize: function () {
