@@ -127,7 +127,9 @@ window.gameEnv = {
       gameEnv.log2 = gameEnv.createHeader("");
       gameEnv.thirdRow.append(gameEnv.log1);
       gameEnv.thirdRow.append(gameEnv.log2);
-      gameEnv.fourthRow.append(gameEnv.createHeader("Opponents Remaining:"));
+      gameEnv.fourthRow.append(
+        gameEnv.createHeader("Opponents Remaining:")
+      );
       gameEnv.secondRow.append([
           gameEnv.activeSet.player.element,
           gameEnv.attackButton(),
@@ -174,6 +176,7 @@ window.gameEnv = {
   },
 
   chooseEnemy: function(val) {
+    //select enemy, assign to activeSet.opponent
     $.each(this.characters, function (key, obj) {
       console.log(gameEnv.activeSet.standby.indexOf(obj));
       if (
