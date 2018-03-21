@@ -7,7 +7,8 @@ h1, h2, h5 {
     color: #0d0000;
 }
 
-h5 {width: inherit;margin: auto;font-size: 27px;color: #f4e6c0;}
+h5 {
+    width: inherit;margin: auto;font-size: 27px;color: #f4e6c0;}
 
 .heroBox {
     height: 152px;
@@ -31,8 +32,10 @@ h5 {width: inherit;margin: auto;font-size: 27px;color: #f4e6c0;}
 
 }
 
-.heroT, .heroS{
-    font-size: 20px;
+.heroT, .heroS {
+    position: relative;
+    float: right;
+    font-size: 1.5vw;
     text-align: center;
     margin-bottom: 25px;
     z-index: 5;
@@ -42,6 +45,12 @@ h5 {width: inherit;margin: auto;font-size: 27px;color: #f4e6c0;}
     height: 190px;
 }
 
+.charInfo {
+    position: relative;
+    float: right;
+    width: 38%;
+    margin-top: 10px;
+}
 .logBox {
     
 background: #f7e4b89c;
@@ -58,7 +67,7 @@ height: 150px;
 .pic {
     position: relative;
     float: left;
-    bottom: 50px;
+    bottom: 1px;
     margin-left: -5.5%;
     height: 101%;
     z-index: 3;

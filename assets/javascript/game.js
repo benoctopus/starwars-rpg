@@ -22,22 +22,20 @@ class Jedi {
     this.title = $("<h3>");
     this.title.addClass("heroT w-100");
     this.title.text(this.name);
-    this.element.append(this.title);
     //image placement
     this.image = $("<img>");
     this.image.attr("src", this.src);
     this.image.attr("alt", this.name);
     this.image.addClass("pic " + this.value);
     this.element.append(this.image);
-    //text content holder
-    this.content = $("<div>");
-    this.content.addClass(".holder");
-    this.element.append(this.content);
     //character status
     this.status = $("<h4>");
     this.status.addClass("heroS");
     this.status.text("health: " + this.health);
-    this.content.append(this.status)
+    //teztbo
+    this.charInfo = $("<div class='charInfo'>");
+    this.charInfo.append([this.title, this.status]);
+    this.element.append(this.charInfo)
   }
 
   hit(damage) {
