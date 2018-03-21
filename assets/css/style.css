@@ -2,6 +2,10 @@
     font-family: "Courier New", "monospace";
 }
 
+button:focus{
+    outline: none;
+}
+
 h1, h2, h5 {
     text-align: center !important;
     color: #0d0000;
@@ -15,24 +19,6 @@ h5 {
     border: solid #9000b19c;
     background:#f7e4b89c;
 }
-
-.luke {
-
-}
-
-.maul {
-
-}
-
-.sidious {
-
-/* right: 18%; */
-}
-
-.obi-wan {
-
-}
-
 .heroT, .heroS {
     position: relative;
     float: right;
