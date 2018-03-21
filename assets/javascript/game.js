@@ -27,7 +27,7 @@ class Jedi {
     this.image = $("<img>");
     this.image.attr("src", this.src);
     this.image.attr("alt", this.name);
-    this.image.addClass("pic ");
+    this.image.addClass("pic " + this.value);
     this.element.append(this.image);
     //text content holder
     this.content = $("<div>");
@@ -78,10 +78,10 @@ window.gameEnv = {
 
   characters: {
     //base character declaration
-    luke: new Jedi("Luke Skywalker", "luke", "#", 100, 13, 25),
-    obi: new Jedi("Obi-Wan Kenobi", "obi", "#", 120, 10, 20),
-    maul: new Jedi("Darth Maul", "maul", "#", 180, 6, 15),
-    sidious: new Jedi("Darth Sidious", "sidious", "#", 150, 8, 18),
+    luke: new Jedi("Luke Skywalker", "luke", "assets/images/luke.jpg", 100, 13, 25),
+    obi: new Jedi("Obi-Wan Kenobi", "obi", "assets/images/obi-wan.jpg", 120, 10, 20),
+    maul: new Jedi("Darth Maul", "maul", "assets/images/maul.png", 180, 6, 15),
+    sidious: new Jedi("Darth Sidious", "sidious", "assets/images/sidious.jpg", 150, 8, 18),
   },
 
   displaySet: [

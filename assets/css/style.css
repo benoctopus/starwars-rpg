@@ -10,13 +10,32 @@ h1, h2, h5 {
 h5 {width: inherit;margin: auto;font-size: 27px;color: #f4e6c0;}
 
 .heroBox {
-    height: 155px;
+    height: 152px;
+    border: solid #9000b19c;
+    display: 18px;
+}
+
+.luke {
+
+}
+
+.maul {
+
+}
+
+.sidious {
+/* right: 18%; */
+}
+
+.obi-wan {
+
 }
 
 .heroT, .heroS{
     font-size: 20px;
     text-align: center;
     margin-bottom: 25px;
+    z-index: 5;
 }
 
 .row5 {
@@ -24,15 +43,30 @@ h5 {width: inherit;margin: auto;font-size: 27px;color: #f4e6c0;}
 }
 
 .logBox {
-    background: #f7e4b89c;
-    border: solid gray;
-    padding-top: 1px;
-    padding-bottom:  2px;
-    height: 150px;
+    
+background: #f7e4b89c;
+    
+border: solid #972faa96;
+    
+padding-top: 1px;
+    
+padding-bottom:  2px;
+    
+height: 150px;
+}
+
+.pic {
+    position: relative;
+    float: left;
+    bottom: 50px;
+    margin-left: -5.5%;
+    height: 101%;
+    z-index: 3;
 }
 
 .logText {
-font-size:  20px;
+
+font-size:  20px;
 }
 
 h1 {
@@ -45,7 +79,7 @@ h1 {
     
 background: #ecb87540;
     
-border-bottom: gray 2px solid;
+border-bottom:  #972faa96 2px solid;
     
 margin-bottom: 37px;
 }
