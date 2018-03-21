@@ -12,7 +12,6 @@ h5 {width: inherit;margin: auto;font-size: 27px;color: #f4e6c0;}
 .heroBox {
     height: 152px;
     border: solid #9000b19c;
-    display: 18px;
 }
 
 .luke {
@@ -24,7 +23,8 @@ h5 {width: inherit;margin: auto;font-size: 27px;color: #f4e6c0;}
 }
 
 .sidious {
-/* right: 18%; */
+
+/* right: 18%; */
 }
 
 .obi-wan {
