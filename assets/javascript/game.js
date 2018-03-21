@@ -16,7 +16,7 @@ class Jedi {
     //jedi element creation for html
     //container element
     this.element = $("<button>");
-    this.element.addClass("col-3 justify-content-center heroBox");
+    this.element.addClass("col-12 col-md-3 justify-content-center heroBox");
     this.element.attr("value", this.value);
     //character title
     this.title = $("<h3>");
