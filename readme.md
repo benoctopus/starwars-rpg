@@ -1,4 +1,4 @@
-#Star Wars RPG
+# Star Wars RPG
 
 A simple strategy game playable with the click of a mouse
 
