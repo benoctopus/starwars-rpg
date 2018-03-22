@@ -298,6 +298,7 @@ window.gameEnv = {
 
   initialize: function () {
     //sets initial enviroment on dom load
+    //resets enviroment on phase change
     $(".envo").empty();
     this.displaySet[this.phase]();
     $(".heroBox").click(function () {
