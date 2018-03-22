@@ -1,3 +1,5 @@
+//Note from the author: Sound effects in web pages are tacky
+
 class Jedi {
   //object template for jedi
   constructor(name, value, src, health, baseAttack, counterAttack) {
