@@ -39,7 +39,7 @@ class Jedi {
   }
 
   hit(damage) {
-    //to be used frequently during battle
+    //adjust health
     this.health -= damage;
     if (this.health < 0) {
       this.health = 0;
@@ -48,6 +48,7 @@ class Jedi {
   }
 
   attackMod() {
+    //increase attack and return hit value
     let temp = this.attack;
     this.attack += this.baseAttack;
     return temp
@@ -133,10 +134,10 @@ window.gameEnv = {
         gameEnv.createHeader("Opponents Remaining:")
       );
       gameEnv.secondRow.append([
-          gameEnv.activeSet.player.element,
-          gameEnv.attackButton(),
-          gameEnv.activeSet.opponent.element,
-        ]);
+        gameEnv.activeSet.player.element,
+        gameEnv.attackButton(),
+        gameEnv.activeSet.opponent.element,
+      ]);
       $.each(gameEnv.activeSet.standby, function(index, obj) {
         gameEnv.fourthRow.append(obj.element);
       });
@@ -154,6 +155,7 @@ window.gameEnv = {
   },
 
   attackButton: function() {
+    //create and return attack button
     let button = $("<button>");
     button.addClass("atk-btn btn btn-secondary col-3 heroBox");
     button.attr("value", "atk");
@@ -200,9 +202,12 @@ window.gameEnv = {
   },
 
   battleLoop: function() {
+    //attack button press
+    //adjust health accordingly
     this.activeSet.opponent.hit(
       this.activeSet.player.attackMod()
     );
+    //log enemy damage
     this.log1.text(
       this.activeSet.player.name + " hit "
       + this.activeSet.opponent.name +
@@ -214,6 +219,7 @@ window.gameEnv = {
       this.activeSet.player.hit(
         this.activeSet.opponent.counterAttack
       );
+      //log player
       this.log2.text(
         this.activeSet.opponent.name
         + " countered with an attack for "
@@ -222,6 +228,7 @@ window.gameEnv = {
       );
     }
     if (this.activeSet.opponent.health < 1) {
+      //win case
       if (this.activeSet.standby.length < 1) {
         this.wins++;
         let btn = $(".atk-btn");
@@ -231,6 +238,7 @@ window.gameEnv = {
         this.log2.text("wins: " + this.wins + "\nlosses: " + this.losses);
       }
       else {
+        //enemy defeated
         this.activeSet.dead.push(this.activeSet.opponent);
         let btn = $(".atk-btn");
         btn.attr("value", "cont");
@@ -244,6 +252,7 @@ window.gameEnv = {
       }
     }
     else if (this.activeSet.player.health < 1) {
+      //loss case
       this.losses++;
       let btn = $(".atk-btn");
       btn.attr("value", "rest");
