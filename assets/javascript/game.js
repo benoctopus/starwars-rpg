@@ -96,10 +96,10 @@ window.gameEnv = {
       let i = 0;
       $.each(gameEnv.characters, function (key, value) {
         if( i < 2) {
-          $("#secondRow").append(value.element);
+          gameEnv.secondRow.append(value.element);
         }
         else {
-          $("#thirdRow").append(value.element);
+          gameEnv.thirdRow.append(value.element);
         }
         i++
       });
