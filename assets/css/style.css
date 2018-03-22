@@ -14,6 +14,10 @@ h1, h2, h5 {
 h5 {
     width: inherit;margin: auto;font-size: 27px;color: #f4e6c0;}
 
+.atk-btn {
+    color: black;
+    font-weight: bold;
+}
 .heroBox {
     height: 152px;
     border: solid #9000b19c;
@@ -24,9 +28,9 @@ h5 {
     float: right;
     font-size: 1.5vw;
     text-align: center;
+    color: #2b0d03;
     margin-bottom: 25px;
     z-index: 5;
-
 }
 
 .row5 {

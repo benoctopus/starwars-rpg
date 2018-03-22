@@ -16,7 +16,7 @@ class Jedi {
     //jedi element creation for html
     //container element
     this.element = $("<button>");
-    this.element.addClass("col-12 col-md-3 justify-content-center heroBox");
+    this.element.addClass("col-3 justify-content-center heroBox");
     this.element.attr("value", this.value);
     //character title
     this.title = $("<h3>");
@@ -77,9 +77,9 @@ window.gameEnv = {
   characters: {
     //base character declaration
     luke: new Jedi("Luke Skywalker", "luke", "assets/images/luke.jpg", 100, 13, 25),
-    obi: new Jedi("Obi-Wan Kenobi", "obi", "assets/images/obi-wan.jpg", 120, 10, 20),
-    maul: new Jedi("Darth Maul", "maul", "assets/images/maul.png", 180, 6, 15),
-    sidious: new Jedi("Darth Sidious", "sidious", "assets/images/sidious.jpg", 150, 8, 18),
+    obi: new Jedi("Obi-Wan Kenobi", "obi", "assets/images/obi-wan.jpg", 120, 10, 21),
+    maul: new Jedi("Darth Maul", "maul", "assets/images/maul.png", 180, 6, 14),
+    sidious: new Jedi("Darth Sidious", "sidious", "assets/images/sidious.jpg", 150, 8, 17),
   },
 
   displaySet: [
@@ -155,7 +155,7 @@ window.gameEnv = {
 
   attackButton: function() {
     let button = $("<button>");
-    button.addClass("atk-btn btn btn-danger col-3 heroBox");
+    button.addClass("atk-btn btn btn-secondary col-3 heroBox");
     button.attr("value", "atk");
     button.text("Attack");
     return button;
@@ -223,11 +223,12 @@ window.gameEnv = {
     }
     if (this.activeSet.opponent.health < 1) {
       if (this.activeSet.standby.length < 1) {
+        this.wins++;
         let btn = $(".atk-btn");
         btn.attr("value", "rest");
         btn.text("Play again");
         this.log1.text("You win!");
-        this.log2.text("   ")
+        this.log2.text("wins: " + this.wins + "\nlosses: " + this.losses);
       }
       else {
         this.activeSet.dead.push(this.activeSet.opponent);
@@ -243,11 +244,12 @@ window.gameEnv = {
       }
     }
     else if (this.activeSet.player.health < 1) {
+      this.losses++;
       let btn = $(".atk-btn");
       btn.attr("value", "rest");
       btn.text("restart");
       this.log1.text("You have been defeated");
-      this.log2.text("   ")
+      this.log2.text("wins: " + this.wins + "\nlosses: " + this.losses);
     }
   },
 
@@ -289,7 +291,6 @@ window.gameEnv = {
     this.displaySet[this.phase]();
     $(".heroBox").click(function () {
       let value = $(this).val();
-      console.log(value);
       gameEnv.boxClick(value);
     });
   }
