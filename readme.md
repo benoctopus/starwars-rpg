@@ -2,6 +2,8 @@
 
 A simple strategy game playable with the click of a mouse
 
+Deployed: https://benoctopus.github.io/starwars-rpg
+
 ## instructions
 
 The game is played by either clicking on the protraits of the involved characters, or clicking on a button labeled attack.
